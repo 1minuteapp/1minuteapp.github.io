@@ -5,3 +5,6 @@ the target sales page.
 
 There may also be some preselling pages. These go farther than a splash page
 and should ideally contain a bonus or special discount.
+
+You can create splash pages using my AI-created Splash Page Wizard here:
+https://q5l15c3rkjhy8ntnfkyg.superdev.run/
