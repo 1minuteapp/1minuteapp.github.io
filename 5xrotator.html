@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>5X Lifetime Rotator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: #1a1a2e;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            color: #ffffff;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 500px;
+        }
+        .timer-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 4px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px;
+            position: relative;
+        }
+        .timer-circle::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 4px solid #8b5cf6;
+            border-right-color: transparent;
+            border-bottom-color: transparent;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .timer-number {
+            font-size: 48px;
+            font-weight: bold;
+            color: #8b5cf6;
+        }
+        .message {
+            font-size: 18px;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 20px;
+        }
+        .ad-link {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b5cf6, #6366f1);
+            color: #ffffff;
+            text-decoration: none;
+            padding: 15px 30px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+        .ad-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+        }
+        .skip-text {
+            margin-top: 25px;
+            font-size: 14px;
+            color: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="timer-circle">
+            <span class="timer-number" id="countdown">5</span>
+        </div>
+        <p class="message">Redirecting in <span id="countdownText">5</span> seconds...</p>
+        <a href="https://llclick.com/2vwkvwdw/" target="_blank" class="ad-link">Join Our Lifetime Rotator</a>
+        <p class="skip-text">Please wait while we redirect you</p>
+    </div>
+
+    <script>
+        (function() {
+            const urls = [
+        "https://teamcustomize-com.systeme.io/jon-presti-splash-page-5x-lifetime-traffic-rotator",
+        "https://teamcustomize-com.systeme.io/0e6102e3",
+        "https://teamcustomize-com.systeme.io/helga-walkers-splash-page-for-5x-lifetime-traffic-rotator",
+        "https://teamcustomize-com.systeme.io/mikecarr5xrotatoroffer"
+            ];
+
+            const randomIndex = Math.floor(Math.random() * urls.length);
+            const targetUrl = urls[randomIndex];
+
+            let seconds = 5;
+            const countdownEl = document.getElementById('countdown');
+            const countdownTextEl = document.getElementById('countdownText');
+
+            const timer = setInterval(() => {
+                seconds--;
+                countdownEl.textContent = seconds;
+                countdownTextEl.textContent = seconds;
+                
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    window.location.href = targetUrl;
+                }
+            }, 1000);
+        })();
+    </script>
+</body>
+</html>
