@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rotator HTML Wizard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-white mb-2">🔄 Rotator HTML Wizard</h1>
+            <p class="text-purple-300">Generate random link rotator HTML code with up to 500 URLs</p>
+        </div>
+
+        <!-- Main Card -->
+        <div class="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 mb-6">
+            <!-- Input Section -->
+            <div class="mb-6">
+                <label class="block text-white font-semibold mb-2">Add URL Links</label>
+                <div class="flex gap-2">
+                    <input 
+                        type="url" 
+                        id="urlInput" 
+                        placeholder="https://example.com"
+                        class="flex-1 px-4 py-3 rounded-lg bg-white/20 border border-purple-400/30 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    >
+                    <button 
+                        onclick="addUrl()"
+                        class="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white font-semibold rounded-lg transition-all duration-200 hover:scale-105"
+                    >
+                        Add URL
+                    </button>
+                </div>
+                <p class="text-purple-300 text-sm mt-2">
+                    💡 Tip: You can add the same URL multiple times to increase its rotation frequency
+                </p>
+            </div>
+
+            <!-- Bulk Add Section -->
+            <div class="mb-6">
+                <label class="block text-white font-semibold mb-2">Or Bulk Add (one URL per line)</label>
+                <textarea 
+                    id="bulkInput" 
+                    rows="4"
+                    placeholder="https://example1.com&#10;https://example2.com&#10;https://example3.com"
+                    class="w-full px-4 py-3 rounded-lg bg-white/20 border border-purple-400/30 text-white placeholder-purple-300 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                ></textarea>
+                <button 
+                    onclick="bulkAddUrls()"
+                    class="mt-2 px-6 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-lg transition-all duration-200"
+                >
+                    Bulk Add URLs
+                </button>
+            </div>
+
+            <!-- URL List -->
+            <div class="mb-6">
+                <div class="flex justify-between items-center mb-3">
+                    <h3 class="text-white font-semibold">
+                        URL List (<span id="urlCount">0</span>/500)
+                    </h3>
+                    <button 
+                        onclick="clearAllUrls()"
+                        class="px-4 py-1 bg-red-600/50 hover:bg-red-600 text-white text-sm rounded-lg transition-all duration-200"
+                    >
+                        Clear All
+                    </button>
+                </div>
+                <div 
+                    id="urlList" 
+                    class="bg-black/30 rounded-lg p-4 max-h-64 overflow-y-auto min-h-[100px]"
+                >
+                    <p class="text-purple-300 text-center italic">No URLs added yet</p>
+                </div>
+            </div>
+
+            <!-- Generate Button -->
+            <div class="text-center">
+                <button 
+                    onclick="generateRotatorHtml()"
+                    class="px-8 py-4 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-bold text-lg rounded-xl transition-all duration-200 hover:scale-105 shadow-lg"
+                >
+                    ✨ Generate Rotator HTML
+                </button>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div id="outputSection" class="hidden bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-6 fade-in">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-white font-bold text-xl">📄 Generated Rotator HTML</h3>
+                <div class="flex gap-2">
+                    <button 
+                        onclick="copyToClipboard()"
+                        id="copyBtn"
+                        class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-all duration-200"
+                    >
+                        📋 Copy Code
+                    </button>
+                    <button 
+                        onclick="downloadHtml()"
+                        class="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold rounded-lg transition-all duration-200"
+                    >
+                        ⬇️ Download
+                    </button>
+                </div>
+            </div>
+            <pre id="outputCode" class="bg-black/50 rounded-lg p-4 overflow-x-auto text-green-400 text-sm font-mono whitespace-pre-wrap"></pre>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-purple-300 text-sm">
+            <p>The generated HTML will randomly redirect to one of your URLs on each page load.</p>
+        </div>
+    </div>
+
+    <script>
+        let urls = [];
+
+        function addUrl() {
+            const input = document.getElementById('urlInput');
+            const url = input.value.trim();
+            
+            if (!url) {
+                alert('Please enter a URL');
+                return;
+            }
+            
+            if (!isValidUrl(url)) {
+                alert('Please enter a valid URL (starting with http:// or https://)');
+                return;
+            }
+            
+            if (urls.length >= 500) {
+                alert('Maximum 500 URLs allowed');
+                return;
+            }
+            
+            urls.push(url);
+            input.value = '';
+            updateUrlList();
+            input.focus();
+        }
+
+        function bulkAddUrls() {
+            const textarea = document.getElementById('bulkInput');
+            const lines = textarea.value.split('\n').map(line => line.trim()).filter(line => line);
+            
+            let added = 0;
+            let invalid = 0;
+            
+            for (const url of lines) {
+                if (urls.length >= 500) {
+                    alert(`Maximum 500 URLs reached. Added ${added} URLs.`);
+                    break;
+                }
+                
+                if (isValidUrl(url)) {
+                    urls.push(url);
+                    added++;
+                } else {
+                    invalid++;
+                }
+            }
+            
+            if (invalid > 0) {
+                alert(`Added ${added} URLs. Skipped ${invalid} invalid URLs.`);
+            }
+            
+            textarea.value = '';
+            updateUrlList();
+        }
+
+        function isValidUrl(string) {
+            try {
+                const url = new URL(string);
+                return url.protocol === 'http:' || url.protocol === 'https:';
+            } catch (_) {
+                return false;
+            }
+        }
+
+        function removeUrl(index) {
+            urls.splice(index, 1);
+            updateUrlList();
+        }
+
+        function clearAllUrls() {
+            if (urls.length === 0) return;
+            if (confirm('Are you sure you want to clear all URLs?')) {
+                urls = [];
+                updateUrlList();
+            }
+        }
+
+        function updateUrlList() {
+            const container = document.getElementById('urlList');
+            const countEl = document.getElementById('urlCount');
+            
+            countEl.textContent = urls.length;
+            
+            if (urls.length === 0) {
+                container.innerHTML = '<p class="text-purple-300 text-center italic">No URLs added yet</p>';
+                return;
+            }
+            
+            container.innerHTML = urls.map((url, index) => `
+                <div class="flex items-center justify-between py-2 px-3 mb-1 bg-white/10 rounded-lg hover:bg-white/20 transition-all group">
+                    <div class="flex items-center gap-2 overflow-hidden">
+                        <span class="text-purple-400 font-mono text-sm">${index + 1}.</span>
+                        <span class="text-white truncate">${escapeHtml(url)}</span>
+                    </div>
+                    <button 
+                        onclick="removeUrl(${index})"
+                        class="text-red-400 hover:text-red-300 opacity-50 group-hover:opacity-100 transition-opacity ml-2 shrink-0"
+                    >
+                        ✕
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function generateRotatorHtml() {
+            if (urls.length === 0) {
+                alert('Please add at least one URL');
+                return;
+            }
+
+            const urlArrayStr = urls.map(url => `        "${url}"`).join(',\n');
+            
+            const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Rotator</title>
+</head>
+<body>
+    <script>
+        var links = [
+${urlArrayStr}
+        ];
+        
+        var randomIndex = Math.floor(Math.random() * links.length);
+        window.location.href = links[randomIndex];
+    <\/script>
+    <noscript>
+        <p>JavaScript is required for this page. Please enable JavaScript in your browser.</p>
+    </noscript>
+</body>
+</html>`;
+
+            document.getElementById('outputCode').textContent = html;
+            document.getElementById('outputSection').classList.remove('hidden');
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function copyToClipboard() {
+            const code = document.getElementById('outputCode').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.remove('bg-blue-600', 'hover:bg-blue-700');
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.add('bg-blue-600', 'hover:bg-blue-700');
+                    btn.classList.remove('bg-green-600');
+                }, 2000);
+            });
+        }
+
+        function downloadHtml() {
+            const code = document.getElementById('outputCode').textContent;
+            const blob = new Blob([code], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rotator.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Allow Enter key to add URL
+        document.getElementById('urlInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                addUrl();
+            }
+        });
+    </script>
+</body>
+</html>
