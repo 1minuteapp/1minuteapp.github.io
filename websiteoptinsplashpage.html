@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Get Your Free Traffic — Jimmy Boyd's Free Traffic Directory</title>
+    <meta
+      name="description"
+      content="Enter your name and email to get the link and free traffic promo code for each program. Join and redeem the code to get your free traffic."
+    />
+    <meta name="theme-color" content="#020617" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Ctext y='19' font-size='20'%3E%E2%9A%A1%3C/text%3E%3C/svg%3E"
+    />
+
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #020617;
+        background-image: radial-gradient(
+            60rem 40rem at 50% -10%,
+            rgba(251, 191, 36, 0.16),
+            transparent
+          ),
+          radial-gradient(50rem 30rem at 100% 100%, rgba(56, 189, 248, 0.08), transparent);
+        background-repeat: no-repeat;
+        color: #cbd5e1;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+          sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      ::selection {
+        background: rgba(251, 191, 36, 0.3);
+        color: #fff;
+      }
+
+      main {
+        width: 100%;
+        max-width: 760px;
+        padding: 48px 24px 56px;
+        text-align: center;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        border: 1px solid rgba(251, 191, 36, 0.3);
+        background: rgba(251, 191, 36, 0.1);
+        color: #fcd34d;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 6px 16px;
+        border-radius: 999px;
+      }
+
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 999px;
+        background: #fbbf24;
+        animation: pulse 1.6s ease-in-out infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(251, 191, 36, 0.55);
+        }
+        50% {
+          box-shadow: 0 0 0 7px rgba(251, 191, 36, 0);
+        }
+      }
+
+      h1 {
+        margin: 26px 0 0;
+        color: #fff;
+        font-size: 40px;
+        line-height: 1.07;
+        font-weight: 900;
+        letter-spacing: -0.03em;
+      }
+
+      .grad {
+        background: linear-gradient(90deg, #fcd34d, #fb923c, #fb7185);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+
+      .lede {
+        max-width: 640px;
+        margin: 26px auto 0;
+        color: #cbd5e1;
+        font-size: 17px;
+      }
+
+      .lede + .lede {
+        margin-top: 16px;
+      }
+
+      /* ---------- opt-in form ---------- */
+      .optin {
+        margin: 38px auto 0;
+        max-width: 460px;
+        border: 1px solid rgba(251, 191, 36, 0.25);
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0.06),
+          rgba(255, 255, 255, 0.02)
+        );
+        border-radius: 22px;
+        padding: 28px 26px 26px;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.45);
+      }
+
+      .optin-heading {
+        margin: 0 0 18px;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+      }
+
+      .optin input[type="text"] {
+        display: block;
+        width: 100%;
+        padding: 14px 16px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(2, 6, 23, 0.6);
+        color: #fff;
+        font-size: 16px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s;
+      }
+
+      .optin input[type="text"]::placeholder {
+        color: #64748b;
+      }
+
+      .optin input[type="text"]:focus {
+        border-color: rgba(251, 191, 36, 0.55);
+        box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.2);
+      }
+
+      .optin input + input {
+        margin-top: 12px;
+      }
+
+      .optin button {
+        display: block;
+        width: 100%;
+        margin-top: 16px;
+        background: linear-gradient(90deg, #fbbf24, #f97316);
+        color: #020617;
+        font-weight: 900;
+        font-size: 17px;
+        font-family: inherit;
+        padding: 15px 20px;
+        border-radius: 12px;
+        border: 0;
+        cursor: pointer;
+        box-shadow: 0 14px 32px rgba(120, 53, 15, 0.5);
+        transition: filter 0.2s, transform 0.15s, box-shadow 0.2s;
+      }
+
+      .optin button:hover {
+        filter: brightness(1.09);
+        transform: translateY(-2px);
+        box-shadow: 0 20px 44px rgba(120, 53, 15, 0.6);
+      }
+
+      .optin button:active {
+        transform: translateY(0);
+      }
+
+      .privacy {
+        margin: 16px 0 0;
+        color: #64748b;
+        font-size: 13px;
+      }
+
+      @media (min-width: 641px) {
+        h1 {
+          font-size: 58px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .dot {
+          animation: none;
+        }
+        .optin button:hover {
+          transform: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <main>
+      <span class="pill"><span class="dot"></span> Free Traffic Program</span>
+
+      <h1>Jimmy Boyd&rsquo;s <span class="grad">Free Traffic</span> Directory</h1>
+
+      <p class="lede">
+        Click through to each page to find the link and free traffic promo code for each program.
+        Join and redeem the code to get your free traffic.
+      </p>
+      <p class="lede">
+        To get bonuses, take a lifetime upgrade on any of the sites. Send your receipt to the email
+        address on the page.
+      </p>
+
+      <!-- SendSteed opt-in form. Do not change the name/value attributes. -->
+      <form class="optin" method="post" action="https://www.sendsteed.com/subscribe/">
+        <p class="optin-heading">Get Your Free Traffic Now</p>
+
+        <input name="n127019" required="" type="text" placeholder="Name" />
+        <input name="e127019" required="" type="text" placeholder="your@email.com" />
+
+        <input type="hidden" name="lllid" value="127019" />
+        <input type="hidden" name="lluid" value="jimmyboyd" />
+        <input type="hidden" name="redirect" value="" />
+        <input type="hidden" name="source" value="" />
+
+        <button type="submit">Submit &rarr;</button>
+
+        <p class="privacy">Your information is kept private. No spam, ever.</p>
+      </form>
+    </main>
+  </body>
+</html>
