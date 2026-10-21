@@ -5,6 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Splash Page Wizard</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+   body{
+   visibility: hidden;
+   }
+</style>
+<script>
+   function do_check(){
+       var password = 'test';
+       var return_value=prompt("Password:");
+       if(return_value == password) {
+           document.getElementsByTagName("BODY")[0].style.visibility = "visible";
+       }
+       else {
+           setTimeout(()=>{
+               alert('This website is protected with a password. Reload the page and try again.');
+           }, 200)
+       }
+   }
+   window.addEventListener("DOMContentLoaded", () => {
+       setTimeout(do_check, 500)
+   })
+</script>
 </head>
 <body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen py-10 px-4">
     <div class="max-w-4xl mx-auto">
