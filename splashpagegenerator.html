@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Splash Page Wizard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="bg-gradient-to-br from-indigo-100 to-purple-100 min-h-screen py-10 px-4">
+    <div class="max-w-4xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-indigo-700 mb-2">🧙‍♂️ Splash Page Wizard</h1>
+            <p class="text-gray-600">Create beautiful splash pages in seconds</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-3">Page Details</h2>
+            
+            <form id="splashForm" class="space-y-6">
+                <!-- Main Heading -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Main Heading</label>
+                    <input type="text" id="mainHeading" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="Enter your main headline...">
+                </div>
+
+                <!-- Offer Text -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Offer Text</label>
+                    <textarea id="offerText" rows="3" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="Describe your offer..."></textarea>
+                </div>
+
+                <!-- Bullet Points -->
+                <div class="grid md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bullet Point 1</label>
+                        <input type="text" id="bullet1" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            placeholder="First benefit...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bullet Point 2</label>
+                        <input type="text" id="bullet2" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            placeholder="Second benefit...">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Bullet Point 3</label>
+                        <input type="text" id="bullet3" required
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            placeholder="Third benefit...">
+                    </div>
+                </div>
+
+                <!-- Get Started Link -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Get Started Button Link</label>
+                    <input type="url" id="buttonLink" required
+                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                        placeholder="https://example.com/signup">
+                </div>
+
+                <!-- Background Image Option -->
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <label class="block text-sm font-medium text-gray-700 mb-3">Include Background Image?</label>
+                    <div class="flex items-center space-x-6">
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="bgOption" value="yes" class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                            <span class="ml-2 text-gray-700">Yes</span>
+                        </label>
+                        <label class="flex items-center cursor-pointer">
+                            <input type="radio" name="bgOption" value="no" checked class="w-4 h-4 text-indigo-600 focus:ring-indigo-500">
+                            <span class="ml-2 text-gray-700">No (White Background)</span>
+                        </label>
+                    </div>
+                    
+                    <!-- Background Image URL (shown when Yes is selected) -->
+                    <div id="bgImageContainer" class="mt-4 hidden">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Background Image URL</label>
+                        <input type="url" id="bgImageUrl"
+                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+                            placeholder="https://example.com/image.jpg">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit"
+                    class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold py-4 px-6 rounded-lg hover:from-indigo-700 hover:to-purple-700 transition transform hover:scale-[1.02] shadow-lg">
+                    ✨ Generate Splash Page HTML
+                </button>
+            </form>
+        </div>
+
+        <!-- Output Section (Hidden by default) -->
+        <div id="outputSection" class="hidden">
+            <div class="bg-white rounded-2xl shadow-xl p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6 border-b pb-3">
+                    <h2 class="text-2xl font-semibold text-gray-800 mb-4 md:mb-0">Generated HTML Code</h2>
+                    <div class="flex space-x-3">
+                        <button id="copyBtn" onclick="copyCode()"
+                            class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:bg-gray-700 transition flex items-center">
+                            📋 Copy Code
+                        </button>
+                        <button onclick="previewPage()"
+                            class="bg-green-600 text-white px-5 py-2 rounded-lg hover:bg-green-700 transition flex items-center">
+                            👁️ Preview in New Tab
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="relative">
+                    <pre class="bg-gray-900 text-gray-100 p-6 rounded-xl overflow-x-auto text-sm leading-relaxed"><code id="generatedCode"></code></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let generatedHTML = '';
+
+        // Toggle background image URL input
+        document.querySelectorAll('input[name="bgOption"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const container = document.getElementById('bgImageContainer');
+                if (this.value === 'yes') {
+                    container.classList.remove('hidden');
+                } else {
+                    container.classList.add('hidden');
+                }
+            });
+        });
+
+        // Form submission
+        document.getElementById('splashForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const mainHeading = document.getElementById('mainHeading').value;
+            const offerText = document.getElementById('offerText').value;
+            const bullet1 = document.getElementById('bullet1').value;
+            const bullet2 = document.getElementById('bullet2').value;
+            const bullet3 = document.getElementById('bullet3').value;
+            const buttonLink = document.getElementById('buttonLink').value;
+            const bgOption = document.querySelector('input[name="bgOption"]:checked').value;
+            const bgImageUrl = document.getElementById('bgImageUrl').value;
+
+            // Generate background style
+            let backgroundStyle = '';
+            if (bgOption === 'yes' && bgImageUrl) {
+                backgroundStyle = `background-image: url('${bgImageUrl}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;`;
+            } else {
+                backgroundStyle = `background-color: #ffffff;`;
+            }
+
+            // Generate the HTML
+            generatedHTML = `<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(mainHeading)}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            ${backgroundStyle}
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px 30px;
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a2e;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .offer-text {
+            font-size: 1.2rem;
+            color: #4a4a68;
+            margin-bottom: 30px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .bullets {
+            list-style: none;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .bullets li {
+            font-size: 1.1rem;
+            color: #333;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+        }
+        .bullets li::before {
+            content: "✓";
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-right: 12px;
+            flex-shrink: 0;
+        }
+        .bullets li span {
+            text-align: left;
+        }
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>${escapeHtml(mainHeading)}</h1>
+        <p class="offer-text">${escapeHtml(offerText)}</p>
+        <ul class="bullets">
+            <li><span>${escapeHtml(bullet1)}</span></li>
+            <li><span>${escapeHtml(bullet2)}</span></li>
+            <li><span>${escapeHtml(bullet3)}</span></li>
+        </ul>
+        <a href="${escapeHtml(buttonLink)}" class="cta-button">Get Started</a>
+    </div>
+</body>
+</html>`;
+
+            // Display the generated code
+            document.getElementById('generatedCode').textContent = generatedHTML;
+            document.getElementById('outputSection').classList.remove('hidden');
+            
+            // Scroll to output
+            document.getElementById('outputSection').scrollIntoView({ behavior: 'smooth' });
+        });
+
+        // Escape HTML special characters for display
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Copy code to clipboard
+        function copyCode() {
+            navigator.clipboard.writeText(generatedHTML).then(() => {
+                const btn = document.getElementById('copyBtn');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                btn.classList.remove('bg-gray-600');
+                btn.classList.add('bg-green-600');
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.classList.remove('bg-green-600');
+                    btn.classList.add('bg-gray-600');
+                }, 2000);
+            });
+        }
+
+        // Preview in new tab
+        function previewPage() {
+            const blob = new Blob([generatedHTML], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
