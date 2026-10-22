@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<title>1-Image Mini Splash Page Creator</title>
+<style>
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --bg:#070b14;
+    --stroke:rgba(255,255,255,.08);
+    --stroke-2:rgba(255,255,255,.14);
+    --text:#e9eefb;
+    --muted:#93a0b8;
+    --accent:#6b9bff;
+    --accent-2:#a06bff;
+    --ok:#3ddc97;
+    --warn:#ffcf6b;
+    --err:#ff7b8f;
+    --radius:18px;
+    --shadow:0 24px 60px -24px rgba(0,0,0,.8);
+  }
+  body{
+    margin:0;
+    padding:clamp(22px,4vw,56px) clamp(14px,4vw,32px) 56px;
+    min-height:100vh;
+    background:
+      radial-gradient(900px 520px at 12% -8%, rgba(107,155,255,.20), transparent 62%),
+      radial-gradient(760px 480px at 102% 2%, rgba(160,107,255,.16), transparent 58%),
+      radial-gradient(700px 700px at 50% 120%, rgba(61,220,151,.06), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font:16px/1.55 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  .wrap{max-width:860px;margin:0 auto;display:flex;flex-direction:column;gap:22px}
+
+  /* ---------- Hero ---------- */
+  .hero{padding:4px 2px}
+  .kicker{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:6px 12px;border:1px solid var(--stroke);border-radius:999px;
+    background:rgba(255,255,255,.03);
+    font-size:12.5px;letter-spacing:.02em;color:var(--muted);
+  }
+  .kicker svg{flex:none;color:#8fb3ff}
+  .hero h1{
+    margin:16px 0 10px;font-size:clamp(28px,5vw,42px);
+    line-height:1.08;letter-spacing:-.025em;font-weight:700;
+  }
+  .hero h1 .grad{
+    background:linear-gradient(92deg,var(--accent),var(--accent-2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  .hero p{margin:0;color:var(--muted);max-width:62ch;font-size:15.5px}
+
+  /* ---------- Cards ---------- */
+  .card{
+    background:linear-gradient(180deg,rgba(255,255,255,.045),rgba(255,255,255,.018));
+    border:1px solid var(--stroke);
+    border-radius:var(--radius);
+    padding:clamp(18px,3vw,26px);
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- Form ---------- */
+  form{display:flex;flex-direction:column;gap:18px}
+  .field{display:flex;flex-direction:column;gap:8px}
+  .field label{font-size:13px;font-weight:600;letter-spacing:.02em;color:#cfd9ec}
+  .field label .opt{color:var(--muted);font-weight:400;font-size:12px}
+  .field input{
+    width:100%;padding:12px 14px;border-radius:12px;
+    border:1px solid var(--stroke-2);background:#0a101d;color:var(--text);
+    font:inherit;font-size:15px;outline:none;
+    transition:border-color .15s, box-shadow .15s, background .15s;
+  }
+  .field input::placeholder{color:#5f6b82}
+  .field input:focus{
+    border-color:rgba(107,155,255,.7);
+    box-shadow:0 0 0 4px rgba(107,155,255,.16);
+    background:#0b1222;
+  }
+  .hint{margin:0;font-size:12.5px;color:var(--muted)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .error{
+    margin:0;font-size:13.5px;color:var(--err);
+    background:rgba(255,123,143,.08);border:1px solid rgba(255,123,143,.25);
+    padding:10px 12px;border-radius:10px;
+  }
+
+  /* ---------- Buttons ---------- */
+  .actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+  .btn{
+    appearance:none;cursor:pointer;display:inline-flex;align-items:center;gap:8px;
+    padding:11px 18px;border-radius:12px;border:1px solid var(--stroke-2);
+    background:rgba(255,255,255,.05);color:var(--text);
+    font:inherit;font-size:14.5px;font-weight:600;
+    transition:transform .08s, background .15s, border-color .15s, box-shadow .15s;
+  }
+  .btn:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.22)}
+  .btn:active{transform:translateY(1px)}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px rgba(107,155,255,.3)}
+  .btn.primary{
+    background:linear-gradient(180deg,#7aa4ff,#5b7dff);border-color:transparent;color:#081226;
+    box-shadow:0 10px 24px -12px rgba(107,155,255,.9);
+  }
+  .btn.primary:hover{background:linear-gradient(180deg,#8db2ff,#6b8bff)}
+  .btn.ghost{background:transparent}
+  .btn.ghost:hover{background:rgba(255,255,255,.06)}
+  .btn svg{flex:none}
+
+  /* ---------- Output ---------- */
+  .output{padding:clamp(18px,3vw,26px);display:flex;flex-direction:column;gap:16px}
+  .output[hidden]{display:none}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .output:not([hidden]){animation:rise .3s ease both}
+  .out-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+  .out-head h2{margin:0;font-size:16px;letter-spacing:.01em;font-weight:650}
+  .count{font-size:12.5px;color:var(--muted)}
+  pre.code{
+    margin:0;padding:16px;max-height:300px;overflow:auto;
+    background:#060a12;border:1px solid var(--stroke);border-radius:14px;
+    font:13px/1.65 ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    white-space:pre-wrap;overflow-wrap:anywhere;color:#c8d6f2;
+  }
+  pre.code code{font:inherit;color:inherit}
+  .preview-frame{
+    border:1px solid var(--stroke);border-radius:14px;overflow:hidden;
+    background:#fff;height:clamp(300px,48vh,460px);
+  }
+  .preview-frame iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+  .status{margin:0;min-height:20px;font-size:13.5px;color:var(--muted)}
+  .status.ok{color:var(--ok)}
+  .status.warn{color:var(--warn)}
+  .status[hidden]{display:none}
+
+  .foot{margin:2px 0 0;text-align:center;font-size:12.5px;color:#75829a}
+
+  @media (max-width:560px){
+    .grid2{grid-template-columns:1fr}
+    .actions .btn{flex:1 1 auto;justify-content:center}
+    .preview-frame{height:clamp(240px,40vh,320px)}
+  }
+</style>
+</head>
+<body>
+<main class="wrap">
+
+  <header class="hero">
+    <span class="kicker">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.6"/><path d="m21 15-5-5L5 21"/>
+      </svg>
+      Single-file tool &middot; works offline
+    </span>
+    <h1>1-Image <span class="grad">Mini Splash Page</span> Creator</h1>
+    <p>Paste an image URL and a destination link, set the exact size, and get a ready-to-paste clickable splash page &mdash; with a one-click preview in a new tab.</p>
+  </header>
+
+  <section class="card" aria-label="Splash page settings">
+    <form id="form" novalidate>
+      <div class="field">
+        <label for="img">Image URL</label>
+        <input id="img" name="img" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+               placeholder="https://iili.io/nOQstWX.png" required />
+        <p class="hint">Direct link to the image file (.png, .jpg, .gif, .webp, .svg).</p>
+      </div>
+
+      <div class="field">
+        <label for="link">Website link</label>
+        <input id="link" name="link" type="text" inputmode="url" autocomplete="off" spellcheck="false"
+               placeholder="https://sharethetraffic.com/index.php?r=jimmyboyd" required />
+        <p class="hint">Where visitors go when they click the image. <code>https://</code> is added if you leave it out.</p>
+      </div>
+
+      <div class="grid2">
+        <div class="field">
+          <label for="w">Desired image width (px)</label>
+          <input id="w" name="w" type="number" min="1" max="10000" step="1" value="900" required />
+        </div>
+        <div class="field">
+          <label for="h">Desired image height (px)</label>
+          <input id="h" name="h" type="number" min="1" max="10000" step="1" value="506" required />
+        </div>
+      </div>
+      <p class="hint">Tip: use your image&rsquo;s native pixel size to avoid stretching.</p>
+
+      <div class="field">
+        <label for="alt">Alt text <span class="opt">(optional)</span></label>
+        <input id="alt" name="alt" type="text" autocomplete="off" placeholder="Describe the image for accessibility &amp; SEO" />
+      </div>
+
+      <p class="error" id="err" role="alert" hidden></p>
+
+      <div class="actions">
+        <button type="submit" class="btn primary">Generate splash HTML</button>
+        <button type="button" class="btn ghost" id="exampleBtn">Load example</button>
+        <button type="reset" class="btn ghost">Reset</button>
+      </div>
+    </form>
+  </section>
+
+  <section class="card output" id="output" aria-label="Generated splash page" hidden>
+    <div class="out-head">
+      <h2>Your splash page HTML</h2>
+      <span class="count" id="count"></span>
+    </div>
+
+    <pre class="code" aria-label="Generated HTML code"><code id="code"></code></pre>
+
+    <div class="actions">
+      <button type="button" class="btn primary" id="previewBtn">
+        Preview in new tab
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>
+      </button>
+      <button type="button" class="btn" id="copyBtn">Copy HTML</button>
+      <button type="button" class="btn" id="downloadBtn">Download .html</button>
+    </div>
+
+    <p class="status" id="status" role="status" aria-live="polite" hidden></p>
+
+    <div class="out-head" style="margin-top:4px">
+      <h2>Live preview</h2>
+      <span class="count">click the image to test the link &middot; scaled down if wider than this panel</span>
+    </div>
+    <div class="preview-frame">
+      <iframe id="frame" title="Splash page preview" sandbox="allow-popups allow-popups-to-escape-sandbox"></iframe>
+    </div>
+  </section>
+
+  <p class="foot">Output is a single line of HTML you can drop into any page builder &mdash; no scripts, no tracking, no dependencies.</p>
+</main>
+
+<noscript>
+  <p style="max-width:860px;margin:24px auto;padding:14px 16px;border:1px solid #ff7b8f;border-radius:12px;color:#ff7b8f;font-family:system-ui,sans-serif">
+    This tool needs JavaScript enabled to generate and preview the splash page.
+  </p>
+</noscript>
+
+<script>
+(function () {
+  'use strict';
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  var form = $('form');
+  var imgEl = $('img');
+  var linkEl = $('link');
+  var wEl = $('w');
+  var hEl = $('h');
+  var altEl = $('alt');
+
+  var errEl = $('err');
+  var outputEl = $('output');
+  var codeEl = $('code');
+  var countEl = $('count');
+  var statusEl = $('status');
+  var frameEl = $('frame');
+
+  var snippet = '';
+  var generated = false;
+  var currentImgUrl = '';
+  var debounceTimer = null;
+  var statusTimer = null;
+  var imageState = Object.create(null); // url -> 'checking' | 'ok' | 'bad'
+
+  /* ---------- Helpers ---------- */
+
+  // Escape a value for use inside a double-quoted HTML attribute.
+  function escapeAttr(value) {
+    return String(value)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  // Remove copy-paste artifacts: markdown [text](url), <url>, stray quotes.
+  function cleanInput(raw) {
+    var v = String(raw || '').trim();
+
+    var md = v.match(/^\[[^\]]*\]\(\s*([^)]*?)\s*\)$/);
+    if (md) { v = md[1].trim(); }
+
+    if (/^<[\s\S]*>$/.test(v)) { v = v.slice(1, -1).trim(); }
+
+    v = v.replace(/^['"]+|['"]+$/g, '').trim();
+    return v;
+  }
+
+  function normalizeUrl(raw) {
+    var v = cleanInput(raw);
+    if (!v) { return ''; }
+    if (v.indexOf('//') === 0) { return 'https:' + v; }
+    if (!/^[a-z][a-z0-9+.-]*:/i.test(v)) {
+      v = 'https://' + v.replace(/^\/+/, '');
+    }
+    return v;
+  }
+
+  function isHttpUrl(value) {
+    try {
+      var parsed = new URL(value);
+      return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function isDataImage(value) {
+    return /^data:image\//i.test(value);
+  }
+
+  /* ---------- Validation ---------- */
+
+  function readForm() {
+    var img = normalizeUrl(imgEl.value);
+    var link = normalizeUrl(linkEl.value);
+    var alt = altEl.value.trim();
+    var wRaw = wEl.value.trim();
+    var hRaw = hEl.value.trim();
+
+    if (!img) {
+      return { ok: false, message: 'Please enter an image URL.' };
+    }
+    if (!isHttpUrl(img) && !isDataImage(img)) {
+      return { ok: false, message: 'That image URL doesn\u2019t look right. Use a full http(s) link to an image file (or a data:image URL).' };
+    }
+    if (!link) {
+      return { ok: false, message: 'Please enter the website link visitors should go to.' };
+    }
+    if (!isHttpUrl(link)) {
+      return { ok: false, message: 'That website link doesn\u2019t look right. Use a full http(s) link.' };
+    }
+
+    var w = Number(wRaw);
+    if (!wRaw || !isFinite(w) || Math.floor(w) !== w || w < 1 || w > 10000) {
+      return { ok: false, message: 'Width must be a whole number between 1 and 10,000 pixels.' };
+    }
+    var h = Number(hRaw);
+    if (!hRaw || !isFinite(h) || Math.floor(h) !== h || h < 1 || h > 10000) {
+      return { ok: false, message: 'Height must be a whole number between 1 and 10,000 pixels.' };
+    }
+
+    return { ok: true, data: { img: img, link: link, alt: alt, w: w, h: h } };
+  }
+
+  /* ---------- Code generation ---------- */
+
+  function buildSnippet(d) {
+    return '<p><a href="' + escapeAttr(d.link) + '" target="_blank" rel="noopener">' +
+           '<img style="display: block; margin-left: auto; margin-right: auto;" src="' + escapeAttr(d.img) +
+           '" alt="' + escapeAttr(d.alt) + '" width="' + d.w + '" height="' + d.h + '" /></a></p>';
+  }
+
+  function buildPreviewDoc(html) {
+    return '<!DOCTYPE html>\n' +
+      '<html lang="en">\n' +
+      '<head>\n' +
+      '<meta charset="utf-8">\n' +
+      '<meta name="viewport" content="width=device-width, initial-scale=1">\n' +
+      '<title>Splash Page Preview</title>\n' +
+      '<style>\n' +
+      '  html,body{margin:0}\n' +
+      '  body{min-height:100vh;min-height:100svh;display:flex;padding:24px;box-sizing:border-box;background:#fff}\n' +
+      '  body>p{margin:auto}\n' +
+      '  img{max-width:100%;height:auto}\n' +
+      '</style>\n' +
+      '</head>\n' +
+      '<body>\n' +
+      html + '\n' +
+      '</body>\n' +
+      '</html>';
+  }
+
+  /* ---------- UI updates ---------- */
+
+  function showError(message) {
+    errEl.textContent = message;
+    errEl.hidden = false;
+  }
+
+  function clearError() {
+    errEl.textContent = '';
+    errEl.hidden = true;
+  }
+
+  function setStatus(message, tone) {
+    window.clearTimeout(statusTimer);
+    statusEl.textContent = message;
+    statusEl.className = 'status' + (tone ? ' ' + tone : '');
+    statusEl.hidden = false;
+    statusTimer = window.setTimeout(function () {
+      statusEl.hidden = true;
+    }, 7000);
+  }
+
+  function hideStatus() {
+    window.clearTimeout(statusTimer);
+    statusEl.hidden = true;
+  }
+
+  // Quick load-test of a remote image URL so broken links are caught early.
+  function verifyImage(url) {
+    if (!/^https?:/i.test(url)) { return; } // data: URIs render locally, nothing to test
+    if (imageState[url]) { return; }
+    imageState[url] = 'checking';
+
+    var probe = new Image();
+    var settled = false;
+
+    var finish = function (ok) {
+      if (settled) { return; }
+      settled = true;
+      imageState[url] = ok ? 'ok' : 'bad';
+      if (!ok && url === currentImgUrl) {
+        setStatus('Heads up: that image URL didn\u2019t load. Make sure it points directly at an image file, not a web page.', 'warn');
+      }
+    };
+
+    probe.onload = function () { finish(probe.naturalWidth > 0); };
+    probe.onerror = function () { finish(false); };
+    probe.src = url;
+  }
+
+  // strictTimer: only surface validation errors when the user explicitly submits.
+  function refresh(options) {
+    var opts = options || {};
+    var result = readForm();
+
+    if (!result.ok) {
+      if (opts.strict) { showError(result.message); }
+      return false;
+    }
+
+    clearError();
+    snippet = buildSnippet(result.data);
+    currentImgUrl = result.data.img;
+
+    codeEl.textContent = snippet;
+    countEl.textContent = snippet.length.toLocaleString() + ' characters';
+    frameEl.srcdoc = buildPreviewDoc(snippet);
+    outputEl.hidden = false;
+
+    if (opts.writeBack) {
+      imgEl.value = result.data.img;
+      linkEl.value = result.data.link;
+      wEl.value = result.data.w;
+      hEl.value = result.data.h;
+    }
+
+    verifyImage(result.data.img);
+    return true;
+  }
+
+  /* ---------- Events ---------- */
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    if (refresh({ strict: true, writeBack: true })) {
+      generated = true;
+      hideStatus();
+      outputEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  });
+
+  form.addEventListener('reset', function () {
+    // Runs before fields are cleared, so defer.
+    window.setTimeout(function () {
+      generated = false;
+      snippet = '';
+      outputEl.hidden = true;
+      frameEl.removeAttribute('srcdoc');
+      clearError();
+      hideStatus();
+    }, 0);
+  });
+
+  [imgEl, linkEl, wEl, hEl, altEl].forEach(function (el) {
+    el.addEventListener('input', function () {
+      if (!generated) { return; }
+      window.clearTimeout(debounceTimer);
+      debounceTimer = window.setTimeout(function () {
+        refresh({ strict: false });
+      }, 320);
+    });
+  });
+
+  $('exampleBtn').addEventListener('click', function () {
+    imgEl.value = 'https://iili.io/nOQstWX.png';
+    linkEl.value = 'https://sharethetraffic.com/index.php?r=jimmyboyd';
+    wEl.value = 900;
+    hEl.value = 506;
+    altEl.value = '';
+    form.requestSubmit();
+  });
+
+  $('previewBtn').addEventListener('click', function () {
+    var result = readForm();
+    if (!result.ok) {
+      showError(result.message);
+      return;
+    }
+
+    var doc = buildPreviewDoc(buildSnippet(result.data));
+    var blob = new Blob([doc], { type: 'text/html;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var win = null;
+
+    try { win = window.open(url, '_blank'); } catch (e) { win = null; }
+
+    if (!win) {
+      // Pop-up blocked: try an anchor click as a second chance (still a user gesture).
+      try {
+        var a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) { /* ignore */ }
+
+      setStatus('The new tab was blocked by your browser or this embedded preview. The live preview below shows the page \u2014 in a normal browser tab the button opens it directly.', 'warn');
+    } else {
+      setStatus('Preview opened in a new tab.', 'ok');
+    }
+
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+  });
+
+  $('copyBtn').addEventListener('click', function () {
+    if (!snippet) { return; }
+
+    var fallbackCopy = function () {
+      var ta = document.createElement('textarea');
+      ta.value = snippet;
+      ta.setAttribute('readonly', '');
+      ta.style.position = 'fixed';
+      ta.style.top = '-1000px';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+      ta.remove();
+      if (ok) {
+        setStatus('HTML copied to your clipboard.', 'ok');
+      } else {
+        setStatus('Couldn\u2019t copy automatically \u2014 select the code above and press Ctrl/\u2318 + C.', 'warn');
+      }
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(snippet).then(function () {
+        setStatus('HTML copied to your clipboard.', 'ok');
+      }).catch(fallbackCopy);
+    } else {
+      fallbackCopy();
+    }
+  });
+
+  $('downloadBtn').addEventListener('click', function () {
+    if (!snippet) { return; }
+    var blob = new Blob([snippet + '\n'], { type: 'text/html;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'splash-page.html';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    window.setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+  });
+})();
+</script>
+</body>
+</html>
